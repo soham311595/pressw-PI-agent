@@ -169,7 +169,7 @@ function switchTab(name,el){
 
 async function callClaude(messages, useSearch=true){
 
-  const body={model:'claude-sonnet-4-5',max_tokens:4000,messages};
+  const body={model:'claude-sonnet-4-5',max_tokens:1500,messages};
   if(useSearch)body.tools=[{type:'web_search_20250305',name:'web_search'}];
   const res=await fetch('/api/claude',{
     method:'POST',
@@ -183,7 +183,7 @@ async function callClaude(messages, useSearch=true){
 async function runAgentLoop(initialMessages){
   let messages=[...initialMessages];
   let rounds=0;
-  const MAX_ROUNDS=4;
+  const MAX_ROUNDS=2;
 
   while(rounds<MAX_ROUNDS){
     const result=await callClaude(messages);
@@ -248,7 +248,7 @@ async function run(){
 
   const prompt=`You are a senior AI solutions engineer at PressW, an AI consulting firm. Research the company "${company}" using web search and produce a prospect intelligence brief.
 
-Use web_search to find: their industry, size, business model, tech stack, recent news, and any operational inefficiencies that AI could solve.
+Use ONE web_search call to research the company. Then return the JSON immediately.
 
 After researching, return ONLY a valid JSON object — no markdown fences, no extra text, just the raw JSON:
 
@@ -274,7 +274,7 @@ After researching, return ONLY a valid JSON object — no markdown fences, no ex
   "hookLine": "one sentence on why this company is a great PressW prospect"
 }
 
-Include 3 opportunities max. Keep all string values concise (under 60 words each). Be specific to what you find in research.`;
+Include 2 opportunities max. Keep all string values under 30 words each. Be specific to what you find in research.`;
 
   try {
     log('Calling Claude with web_search tool...', 'search');
