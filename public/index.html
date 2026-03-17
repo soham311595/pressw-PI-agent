@@ -99,10 +99,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14
     <h1>Prospect Intelligence<span class="cursor"></span></h1>
     <p>Enter any company — the agent researches them, maps their AI gaps, and writes a personalized outreach in one shot.</p>
   </div>
-<div style="margin-bottom:12px;display:flex;align-items:center;gap:10px">
-    <input class="main-input" id="api-key-input" type="password" placeholder="Anthropic API key (sk-ant-...)" style="flex:1;font-family:var(--mono);font-size:13px">
-    <a href="https://console.anthropic.com/settings/keys" target="_blank" style="font-size:12px;color:var(--muted);white-space:nowrap;text-decoration:none;border-bottom:0.5px solid var(--dim)">Get key →</a>
-  </div>
+
   <div class="input-row">
     <input class="main-input" id="company-input" placeholder="Company name or domain (e.g. Stripe, acme.com)" onkeydown="if(event.key==='Enter')run()">
     <button class="run-btn" id="run-btn" onclick="run()">
@@ -171,8 +168,7 @@ function switchTab(name,el){
 }
 
 async function callClaude(messages, useSearch=true){
-  const apiKey=document.getElementById('api-key-input').value.trim();
-  if(!apiKey)throw new Error('Enter your Anthropic API key above first');
+
   const body={model:'claude-sonnet-4-20250514',max_tokens:4000,messages};
   if(useSearch)body.tools=[{type:'web_search_20250305',name:'web_search'}];
   const res=await fetch('/api/claude',{
